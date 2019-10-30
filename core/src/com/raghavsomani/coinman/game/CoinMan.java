@@ -50,15 +50,11 @@ public class CoinMan extends ApplicationAdapter {
 	BitmapFont font;
 	BitmapFont gameOver;
 	int gameState=0;
-	Sound bombSound;
 	Sound coinSound;
-	Sound bgm;
 	Sound jump;
 	@Override
 	public void create () {
-		bombSound = Gdx.audio.newSound(Gdx.files.internal("Explosion+1.mp3"));
 		coinSound = Gdx.audio.newSound(Gdx.files.internal("coin.wav"));
-		bgm=Gdx.audio.newSound(Gdx.files.internal("bgm.wav"));
 		jump=Gdx.audio.newSound(Gdx.files.internal("jump.wav"));
 		batch = new SpriteBatch();
 		layout = new GlyphLayout();
@@ -102,7 +98,6 @@ public class CoinMan extends ApplicationAdapter {
 
 		if(gameState==0){
 			//Game is Live
-			bgm.play();
 			if (coinCount < 100) {
 				coinCount++;
 			} else {
@@ -123,14 +118,7 @@ public class CoinMan extends ApplicationAdapter {
 			}
 			bombRectangle.clear();
 			for (int i = 0; i < bombXs.size(); i++) {
-			/*int x1 = bombXs.get(i);
-			int y1 = bombYs.get(i);*/
 				int flag = 0;
-			/*for (int j = 0; j < coinXs.size(); j++) {
-				if (coinXs.get(j) == x1 && coinYs.get(j) == y1) {
-					flag = 1;
-					break;
-				}*/
 				if (flag == 0) {
 					batch.draw(bomb, bombXs.get(i), bombYs.get(i));
 					bombXs.set(i, bombXs.get(i) - 12);
@@ -161,14 +149,12 @@ public class CoinMan extends ApplicationAdapter {
 		if(gameState==1){
 			//Waiting to start
 			if(Gdx.input.justTouched()){
-
 				gameState=0;
 			}
 		}
 
 		if(gameState==2){
 			//Game Over Screen
-
 			if(Gdx.input.justTouched()){
 				gameState=1;
 				velocity=0;
@@ -182,7 +168,6 @@ public class CoinMan extends ApplicationAdapter {
 				coinCount=0;
 				bombCount=0;
 				score=0;
-
 			}
 		}
 
@@ -207,9 +192,7 @@ public class CoinMan extends ApplicationAdapter {
 		for (int i = 0; i < bombRectangle.size(); i++) {
 			if (Intersector.overlaps(manRectangle, bombRectangle.get(i))) {
 				//Gdx.app.log("Bomb", "Collison");
-               //bgm.stop();
-
-				gameState=2;
+               	gameState=2;
 				batch.draw(dizzy,(Gdx.graphics.getWidth() - man[manState].getWidth()) / 2, manY);
 				layout.setText(font, "Game Over!!\n Tap to Play Again!!");
 				float height = layout.height;
